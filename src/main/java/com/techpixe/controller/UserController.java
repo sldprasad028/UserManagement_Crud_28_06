@@ -61,11 +61,10 @@ public class UserController
 	}
 
 	
-	
 	@GetMapping("/fetchAll")
-	public ResponseEntity<ApiResponse<List<User>>> fetchAll() 
+	public ResponseEntity<ApiResponse<List<UserResponseDTO_Record>>> fetchAll() 
 	{
-	    List<User> fetchedData = userService.getAll();
+	    List<UserResponseDTO_Record> fetchedData = userService.getAll();
 	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "All users fetched successfully", fetchedData));
 	}
 
@@ -73,19 +72,16 @@ public class UserController
 	@GetMapping("/fetchAll2")
 	public ResponseEntity<ApiResponse<List<UserResponseDTO_Record>>> fetchAll2()
 	{
-	    List<User> fetchedData = userService.getAll();
-	    List<UserResponseDTO_Record> fetchDtoList = UserResponseDTO_Record.fromEntityList(fetchedData);
-	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "All users (DTO) fetched successfully", fetchDtoList));
+	    List<UserResponseDTO_Record> fetchedData = userService.getAll();
+	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "All users (DTO) fetched successfully", fetchedData));
 	}
 
 
 	@GetMapping("/fetchAllUsersWithPagination/{offSet}/{pageSize}")
 	public ResponseEntity<ApiResponse<Page<UserResponseDTO_Record>>> fetchAllUsersWithPagination(@PathVariable int offSet, @PathVariable int pageSize)
 	{ 
-	    Page<User> fetchAllPaginatedUsersData = userService.getAllUsersWithPagination(offSet, pageSize);
-	    Page<UserResponseDTO_Record> dtoPage = UserResponseDTO_Record.fromEntityPage(fetchAllPaginatedUsersData);
-	   
-	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "Paginated users fetched successfully", dtoPage));
+	    Page<UserResponseDTO_Record> fetchAllPaginatedUsersData = userService.getAllUsersWithPagination(offSet, pageSize);
+	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "Paginated users fetched successfully", fetchAllPaginatedUsersData));
 	}
 
 	

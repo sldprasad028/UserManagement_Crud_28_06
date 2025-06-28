@@ -16,9 +16,9 @@ public interface UserService
 	//With Record
 	public UserResponseDTO_Record getUserById(Long userId);
 	
-	public List<User> getAll();
+	public List<UserResponseDTO_Record> getAll();
 	
-	public Page<User> getAllUsersWithPagination(int offSet,int pageSize);
+	public Page<UserResponseDTO_Record> getAllUsersWithPagination(int offSet,int pageSize);
 	
 	public void deleteUser(Long userId);
 	

@@ -13,6 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.techpixe.dto.UpdateUserRequestDTO;
 import com.techpixe.dto.UserResponseDTO_Record;
 import com.techpixe.entity.User;
+import com.techpixe.enums.Role;
 import com.techpixe.exception.EmailAlreadyExistsException;
 import com.techpixe.exception.UserNotFoundException;
 import com.techpixe.repository.UserRepository;
@@ -39,7 +40,9 @@ public class UserServiceImpl implements UserService
 		user.setEmail(email);
 		user.setMobileNumber(mobileNumber);
 		user.setCity(city);
+		user.setCreatedAt(LocalDateTime.now());
 		user.setPassword(password);
+		user.setRole(Role.USER);
 		
 		userRepository.save(user);
 	}
@@ -53,15 +56,17 @@ public class UserServiceImpl implements UserService
 	}
 
 	@Override
-	public List<User> getAll()
+	public List<UserResponseDTO_Record> getAll()
 	{
-		return userRepository.findAll();
+		List<User> fetchedAllUsers = userRepository.findAll();
+		return UserResponseDTO_Record.fromEntityList(fetchedAllUsers);
 	}
 
 	@Override
-	public Page<User> getAllUsersWithPagination(int offSet, int pageSize)
+	public Page<UserResponseDTO_Record> getAllUsersWithPagination(int offSet, int pageSize)
 	{
-		return userRepository.findAll(PageRequest.of(offSet, pageSize));
+		Page<User> allUsersData = userRepository.findAll(PageRequest.of(offSet, pageSize));
+		return UserResponseDTO_Record.fromEntityPage(allUsersData);
 	}
 	
 	
@@ -107,34 +112,35 @@ public class UserServiceImpl implements UserService
 //	}
 	
 	@Override
-	public void updateUser4(Long userId, UpdateUserRequestDTO updateRequest) {
+	public void updateUser4(Long userId, UpdateUserRequestDTO updateRequest)
+	{
 	    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
-
 	    boolean isUpdated = false;
 
-	    if (updateRequest.getUserName() != null && !updateRequest.getUserName().equals(user.getUserName())) {
+	    if (updateRequest.getUserName() != null && !updateRequest.getUserName().equals(user.getUserName())) 
+	    {
 	        user.setUserName(updateRequest.getUserName());
 	        isUpdated = true;
 	    }
-
-	    if (updateRequest.getMobileNumber() != null && !updateRequest.getMobileNumber().equals(user.getMobileNumber())) {
+	    if (updateRequest.getMobileNumber() != null && !updateRequest.getMobileNumber().equals(user.getMobileNumber()))
+	    {
 	        user.setMobileNumber(updateRequest.getMobileNumber());
 	        isUpdated = true;
 	    }
-
-	    if (updateRequest.getCity() != null && !updateRequest.getCity().equals(user.getCity())) {
+	    if (updateRequest.getCity() != null && !updateRequest.getCity().equals(user.getCity())) 
+	    {
 	        user.setCity(updateRequest.getCity());
 	        isUpdated = true;
 	    }
-
-	    if (isUpdated) {
+	    if (isUpdated) 
+	    {
 	        user.setUpdatedAt(LocalDateTime.now());
 	        userRepository.save(user);
-	    } else {
+	    }
+	    else
+	    {
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No changes provided for update");
 	    }
 	}
-
-
 
 }

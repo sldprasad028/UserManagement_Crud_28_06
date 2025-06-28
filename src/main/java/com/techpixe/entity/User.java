@@ -3,8 +3,11 @@ package com.techpixe.entity;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.techpixe.enums.Role;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -52,7 +55,11 @@ public class User
 	private String password;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private LocalDateTime createdAt = LocalDateTime.now(); 
+	private LocalDateTime createdAt;
 	
-	private LocalDateTime updatedAt = LocalDateTime.now();
+	private LocalDateTime updatedAt;
+	
+	@Enumerated(EnumType.STRING)
+	private Role role; // No hardcoded value
+
 }
