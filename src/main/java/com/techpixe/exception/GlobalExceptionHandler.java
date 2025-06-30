@@ -72,7 +72,7 @@ public class GlobalExceptionHandler
 	@ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleUserNotFound(UserNotFoundException ex)
 	{
-        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 	
 	@ExceptionHandler(EmailAlreadyExistsException.class)

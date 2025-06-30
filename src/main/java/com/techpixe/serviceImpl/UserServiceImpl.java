@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.techpixe.dto.UpdateUserRequestDTO;
+import com.techpixe.dto.UserRequestDTO;
 import com.techpixe.dto.UserResponseDTO_Record;
 import com.techpixe.entity.User;
 import com.techpixe.enums.Role;
@@ -25,23 +27,26 @@ public class UserServiceImpl implements UserService
 	@Autowired
 	UserRepository userRepository;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	
 	@Override
-	public void saveUser(String userName, String email, String mobileNumber, String city, String password)
+	public void saveUser(UserRequestDTO userRequestDTO)
 	{
-		 boolean isTrue= userRepository.existsByEmail(email);
+		 boolean isTrue= userRepository.existsByEmail(userRequestDTO.getEmail());
 		 if (isTrue)
 		 {
-			 throw new EmailAlreadyExistsException(email);
+			 throw new EmailAlreadyExistsException(userRequestDTO.getEmail());
 		 }
 		
 		User user = new User();
-		user.setUserName(userName);
-		user.setEmail(email);
-		user.setMobileNumber(mobileNumber);
-		user.setCity(city);
+		user.setUserName(userRequestDTO.getUserName());
+		user.setEmail(userRequestDTO.getEmail());
+		user.setMobileNumber(userRequestDTO.getMobileNumber());
+		user.setCity(userRequestDTO.getCity());
 		user.setCreatedAt(LocalDateTime.now());
-		user.setPassword(password);
+		user.setPassword(passwordEncoder.encode(userRequestDTO.getPassword()));
 		user.setRole(Role.USER);
 		
 		userRepository.save(user);
@@ -54,6 +59,15 @@ public class UserServiceImpl implements UserService
 	    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
 	    return UserResponseDTO_Record.fromEntity(user);
 	}
+	
+	//With DTO Class.
+	@Override
+	public UpdateUserRequestDTO getUserById1(Long userId) 
+	{
+	    User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+	    return UpdateUserRequestDTO.fromEntity(user);
+	}
+
 
 	@Override
 	public List<UserResponseDTO_Record> getAll()

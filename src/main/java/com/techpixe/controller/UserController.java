@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.techpixe.dto.UpdateUserRequestDTO;
+import com.techpixe.dto.UserRequestDTO;
 import com.techpixe.dto.UserResponseDTO_Record;
 import com.techpixe.entity.User;
 import com.techpixe.exception.ApiResponse;
@@ -45,9 +46,9 @@ public class UserController
 //    }
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse<Object>> addUser2(@Valid @RequestBody User user) 
+	public ResponseEntity<ApiResponse<Object>> addUser2(@Valid @RequestBody UserRequestDTO userRequestDTO) 
 	{
-	    userService.saveUser(user.getUserName(), user.getEmail(), user.getMobileNumber(), user.getCity(), user.getPassword());
+	    userService.saveUser(userRequestDTO);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HttpStatus.CREATED.value(), "User saved successfully", null));
 	}
 

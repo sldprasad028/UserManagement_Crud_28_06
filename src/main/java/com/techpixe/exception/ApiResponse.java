@@ -38,3 +38,22 @@ public class ApiResponse<T>
         return new ApiResponse<>(false, statusCode, message, null, errors);
     }
 }
+
+
+
+// @JsonInclude(JsonInclude.Include.NON_NULL) ::  Only include non-null fields in JSON
+											//This tells Jackson (the JSON library) to exclude null fields from the JSON response.
+
+// ApiResponse<T>  :: <T> makes the class generic, meaning it can handle any type of data (String, Integer, custom objects, lists, etc.).
+
+
+//private T data;
+// 1) This holds the response body in case of a success.
+// 2) T allows flexibility — this can be any object type depending on what you're sending back.
+
+// private T errors;
+// 1) This holds error details (like validation messages) in case of a failure.
+// 2) Again, T gives flexibility — the errors could be a string, a list of messages, a map, etc.
+
+//Note :  T is a placeholder that gets replaced with a real class when you use the ApiResponse.
+

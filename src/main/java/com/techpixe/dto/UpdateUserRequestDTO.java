@@ -1,5 +1,7 @@
 package com.techpixe.dto;
 
+import com.techpixe.entity.User;
+
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -20,5 +22,11 @@ public class UpdateUserRequestDTO
 
     @Pattern(regexp = "^[A-Za-z ]+$", message = "City must contain only letters and spaces")
     private String city;
+    
+ // ✅ Static mapper method to convert User -> UpdateUserRequestDTO
+    public static UpdateUserRequestDTO fromEntity(User user) 
+    {
+        return new UpdateUserRequestDTO(user.getUserName(),user.getMobileNumber(),user.getCity());
+    }
 }
 
