@@ -47,7 +47,6 @@ public class UserController
 	}
 
 	
-	
 	@GetMapping("/fetchById/{userId}")
 	public ResponseEntity<ApiResponse<UserResponseDTO_Record>> getUserDetails(@PathVariable Long userId)
 	{

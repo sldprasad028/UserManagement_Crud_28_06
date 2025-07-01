@@ -1,5 +1,6 @@
 package com.techpixe.serviceImpl;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -148,7 +149,7 @@ public class UserServiceImpl implements UserService
 	    }
 	    if (isUpdated) 
 	    {
-	        user.setUpdatedAt(LocalDateTime.now());
+	        user.setUpdatedAt(LocalDateTime.now().withSecond(0).withNano(0));
 	        userRepository.save(user);
 	    }
 	    else
