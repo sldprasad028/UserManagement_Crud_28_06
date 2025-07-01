@@ -37,16 +37,10 @@ public class UserController
 {
 	@Autowired
 	private UserService userService;
-	
-//	@PostMapping("/add")
-//    public ResponseEntity<ApiResponse<Object>> addUser2(@RequestBody User user) 
-//	{
-//        userService.saveUser(user.getUserName(), user.getEmail(), user.getMobileNumber(), user.getCity(), user.getPassword());
-//        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HttpStatus.CREATED.value(),"User saved successfully", null));
-//    }
+
 	
 	@PostMapping("/add")
-	public ResponseEntity<ApiResponse<Object>> addUser2(@Valid @RequestBody UserRequestDTO userRequestDTO) 
+	public ResponseEntity<ApiResponse<Void>> addUser2(@Valid @RequestBody UserRequestDTO userRequestDTO) 
 	{
 	    userService.saveUser(userRequestDTO);
 	    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HttpStatus.CREATED.value(), "User saved successfully", null));

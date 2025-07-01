@@ -43,6 +43,12 @@ public class GlobalExceptionHandler
 //        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 //    }
 	
+	
+	
+	// ApiResponse<Object> :: For Global Exception handler.
+	//  Allows flexibility to return different types of error payloads (strings, maps, lists, etc.).
+    // You often return a list of errors (e.g., validation errors),  Or a Map with error details, Or a simple message string.And Object provides flexibility for all these shapes.
+	
 
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -72,7 +78,7 @@ public class GlobalExceptionHandler
 	@ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Object>> handleUserNotFound(UserNotFoundException ex)
 	{
-        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.NOT_FOUND.value(), ex.getMessage()), HttpStatus.NOT_FOUND);
     }
 	
 	@ExceptionHandler(EmailAlreadyExistsException.class)

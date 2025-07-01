@@ -48,8 +48,10 @@ public class ProductController
 	        return ResponseEntity.badRequest().body(ApiResponse.failure(HttpStatus.BAD_REQUEST.value(), "Validation Failed", errors));
 	    }
 	    Product saved = productService.saveProduct(dto);
-	    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HttpStatus.CREATED.value(), "Product saved successfully", saved));
+	    return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(HttpStatus.CREATED.value(), "Product saved successfully", null));
 	}
+	
+
 
 
 	
