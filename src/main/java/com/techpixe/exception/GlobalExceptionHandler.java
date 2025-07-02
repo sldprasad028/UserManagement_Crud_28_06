@@ -104,7 +104,7 @@ public class GlobalExceptionHandler
 	@ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleGenericException(Exception ex) 
 	{
-        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Internal Server Error"),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(ApiResponse.failure(HttpStatus.INTERNAL_SERVER_ERROR.value(), "some thing went wrong.please try again after some time."),HttpStatus.INTERNAL_SERVER_ERROR);
     }
 	
 	
