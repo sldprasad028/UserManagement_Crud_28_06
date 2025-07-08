@@ -22,11 +22,15 @@ public interface UserService
 	
 	public List<UserResponseDTO_Record> getAll();
 	
-	public Page<UserResponseDTO_Record> getAllUsersWithPagination(int offSet,int pageSize);
-	
 	public void deleteUser(Long userId);
 	
 	public void updateUser4(Long userId, UpdateUserRequestDTO updateRequest);
 	
+	//----------------------
 	
+	public List<UserResponseDTO_Record> fetchAllUserswithSorting(String field);
+	
+	public Page<UserResponseDTO_Record> fetchAllUsersWithPagination(int offSet,int pageSize);
+	
+	public Page<UserResponseDTO_Record> fetchAllUsersWithPaginationAndSorting(int offSet,int pageSize,String field);	
 }

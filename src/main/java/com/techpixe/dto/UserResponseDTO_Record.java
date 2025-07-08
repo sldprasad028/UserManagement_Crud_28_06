@@ -24,7 +24,8 @@ public record UserResponseDTO_Record(Long userId,String userName,String email)
     }
 	
 	
-	public static Page<UserResponseDTO_Record> fromEntityPage(Page<User> userPage) {
+	public static Page<UserResponseDTO_Record> fromEntityPage(Page<User> userPage)
+	{
 	    List<UserResponseDTO_Record> content = userPage.getContent()
 	            .stream()
 	            .map(UserResponseDTO_Record::fromEntity)

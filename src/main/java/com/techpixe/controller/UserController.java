@@ -32,7 +32,7 @@ import com.techpixe.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 public class UserController 
 {
 	@Autowired
@@ -47,7 +47,7 @@ public class UserController
 	}
 
 	
-	@GetMapping("/fetchById/{userId}")
+	@GetMapping("/get-by/{userId}")
 	public ResponseEntity<ApiResponse<UserResponseDTO_Record>> getUserDetails(@PathVariable Long userId)
 	{
 	    UserResponseDTO_Record userResponseDTO_Record = userService.getUserById(userId);
@@ -55,7 +55,7 @@ public class UserController
 	}
 
 	
-	@GetMapping("/fetchAll")
+	@GetMapping("/get-all")
 	public ResponseEntity<ApiResponse<List<UserResponseDTO_Record>>> fetchAll() 
 	{
 	    List<UserResponseDTO_Record> fetchedData = userService.getAll();
@@ -63,23 +63,15 @@ public class UserController
 	}
 
 	
-	@GetMapping("/fetchAll2")
+	@GetMapping("/get-all2")
 	public ResponseEntity<ApiResponse<List<UserResponseDTO_Record>>> fetchAll2()
 	{
 	    List<UserResponseDTO_Record> fetchedData = userService.getAll();
 	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "All users (DTO) fetched successfully", fetchedData));
 	}
 
-
-	@GetMapping("/fetchAllUsersWithPagination/{offSet}/{pageSize}")
-	public ResponseEntity<ApiResponse<Page<UserResponseDTO_Record>>> fetchAllUsersWithPagination(@PathVariable int offSet, @PathVariable int pageSize)
-	{ 
-	    Page<UserResponseDTO_Record> fetchAllPaginatedUsersData = userService.getAllUsersWithPagination(offSet, pageSize);
-	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "Paginated users fetched successfully", fetchAllPaginatedUsersData));
-	}
-
 	
-	@DeleteMapping("/deleteUser/{userId}")
+	@DeleteMapping("/delete/{userId}")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId)
 	{
         userService.deleteUser(userId);
@@ -88,13 +80,34 @@ public class UserController
 	
 	//-----------UPDATE--------------------------------UPDATE-------------------------------UPDATE-----------------------------------------UPDATE------------------------------------------------------
 	//Model-4 **** Chat gpt give (industry standard)
-	@PatchMapping("/updateModel4/{userId}")
+	@PatchMapping("/update/{userId}")
 	public ResponseEntity<ApiResponse<Void>> updateUser(@PathVariable Long userId,@Validated @RequestBody UpdateUserRequestDTO updateRequest) 
 	{
 	    userService.updateUser4(userId, updateRequest); // no return needed
 	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "User updated successfully", null));
 	}
+	
+	//---------------------------
+	
+	@GetMapping("/sorted-by/{field}")
+	public ResponseEntity<ApiResponse<List<UserResponseDTO_Record>>> fetchAllSortingOnCity(@PathVariable String field)
+	{
+		List<UserResponseDTO_Record> fetchedAllSortingData = userService.fetchAllUserswithSorting(field);
+		return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value()," fetched Successfully",fetchedAllSortingData));
+	}
 
-
+	@GetMapping("/paginated/{offSet}/{pageSize}")
+	public ResponseEntity<ApiResponse<Page<UserResponseDTO_Record>>> fetchAllUsersWithPagination(@PathVariable int offSet, @PathVariable int pageSize)
+	{ 
+	    Page<UserResponseDTO_Record> fetchAllPaginatedUsersData = userService.fetchAllUsersWithPagination(offSet, pageSize);
+	    return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "Paginated users fetched successfully", fetchAllPaginatedUsersData));
+	}
+	
+	@GetMapping("/paginated-sorted/{offSet}/{pageSize}/{field}")
+	public ResponseEntity<ApiResponse<Page<UserResponseDTO_Record>>> fetchAllUsersWithPaginationAndSorting(@PathVariable int offSet, @PathVariable int pageSize,@PathVariable String field)
+	{
+		Page<UserResponseDTO_Record> paginationWithSorting = userService.fetchAllUsersWithPaginationAndSorting(offSet, pageSize, field);
+		return ResponseEntity.ok(ApiResponse.success(HttpStatus.OK.value(), "Paginated users fetched successfully with Sorting" , paginationWithSorting));
+	}
 	
 }

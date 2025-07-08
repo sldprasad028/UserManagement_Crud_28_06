@@ -4,9 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.query.SortDirection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -77,12 +79,7 @@ public class UserServiceImpl implements UserService
 		return UserResponseDTO_Record.fromEntityList(fetchedAllUsers);
 	}
 
-	@Override
-	public Page<UserResponseDTO_Record> getAllUsersWithPagination(int offSet, int pageSize)
-	{
-		Page<User> allUsersData = userRepository.findAll(PageRequest.of(offSet, pageSize));
-		return UserResponseDTO_Record.fromEntityPage(allUsersData);
-	}
+	
 	
 	
 	// Internal use: returns the entity
@@ -156,6 +153,30 @@ public class UserServiceImpl implements UserService
 	    {
 	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "No changes provided for update");
 	    }
+	}
+	
+	
+	//-------------------------------------
+
+	@Override
+	public List<UserResponseDTO_Record> fetchAllUserswithSorting(String field) 
+	{
+		List<User> all = userRepository.findAll(Sort.by(Sort.Direction.ASC,field));
+		return UserResponseDTO_Record.fromEntityList(all);
+	}
+	
+	@Override
+	public Page<UserResponseDTO_Record> fetchAllUsersWithPagination(int offSet, int pageSize)
+	{
+		Page<User> allUsersData = userRepository.findAll(PageRequest.of(offSet, pageSize));
+		return UserResponseDTO_Record.fromEntityPage(allUsersData);
+	}
+
+	@Override
+	public Page<UserResponseDTO_Record> fetchAllUsersWithPaginationAndSorting(int offSet, int pageSize, String field)
+	{
+		Page<User> allUsers = userRepository.findAll(PageRequest.of(offSet, pageSize).withSort(Sort.by(field)));
+		return UserResponseDTO_Record.fromEntityPage(allUsers);
 	}
 
 }
